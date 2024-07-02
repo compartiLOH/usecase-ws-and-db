@@ -9,24 +9,14 @@ app = FastAPI()
 load_dotenv()
 
 # Retrieve database credentials from environment variables
-db_host = os.getenv("DB_HOST")
-db_port = os.getenv("DB_PORT")
-db_user = os.getenv("DB_USER")
-db_password = os.getenv("DB_PASSWORD")
-db_name = os.getenv("DB_NAME")
+db_url = os.getenv("DATABASE_URL")
 
 # Database connection pool
 db_pool = None
 
 async def connect_to_database():
     global db_pool
-    db_pool = await asyncpg.create_pool(
-        user=db_user,
-        password=db_password,
-        database=db_name,
-        host=db_host,
-        port=db_port
-    )
+    db_pool = await asyncpg.create_pool(dsn=db_url)
 
 async def insert_timestamp():
     async with db_pool.acquire() as connection:
