@@ -33,7 +33,7 @@ async def root():
     timestamp = await insert_timestamp()
     return {"message": "Timestamp inserted: %s" % timestamp}
 
-@app.get("/ping_timestamps")
+@app.get("/timestamps")
 async def get_ping_timestamps():
     async with db_pool.acquire() as connection:
         timestamps = await connection.fetch("SELECT timestamp FROM ping_timestamps ORDER BY timestamp DESC")
